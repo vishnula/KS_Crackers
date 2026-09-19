@@ -16,6 +16,14 @@
       "database_id": "REPLACE_WITH_D1_DATABASE_ID"
     }
   ],
+  // Holds ISR-rendered pages between revalidations. Free tier is 10 GB.
+  // Create it with: npx wrangler r2 bucket create ks-crackers-cache
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "ks-crackers-cache"
+    }
+  ],
   "observability": {
     "enabled": true
   }

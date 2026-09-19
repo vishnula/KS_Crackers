@@ -13,9 +13,26 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
             </p>
             <p className="text-lg font-black leading-tight text-gold">Admin</p>
           </Link>
-          <Link href="/" className="text-[13px] text-muted hover:text-text">
-            View site
-          </Link>
+          <nav className="flex items-center gap-1">
+            <Link
+              href="/admin"
+              className="rounded-lg px-3 py-2 text-[14px] text-muted hover:text-text"
+            >
+              Orders
+            </Link>
+            <Link
+              href="/admin/products"
+              className="rounded-lg px-3 py-2 text-[14px] text-muted hover:text-text"
+            >
+              Prices
+            </Link>
+            <Link
+              href="/"
+              className="rounded-lg px-3 py-2 text-[14px] text-muted hover:text-text"
+            >
+              Site
+            </Link>
+          </nav>
         </div>
       </header>
       <div className="flex-1">{children}</div>

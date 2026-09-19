@@ -2,6 +2,25 @@
 --   local:  npx wrangler d1 execute ks-crackers-db --local  --file=./schema.sql
 --   remote: npx wrangler d1 execute ks-crackers-db --remote --file=./schema.sql
 
+-- Catalogue. Seeded from the client's PDF via `npm run db:seed`, then owned by
+-- the admin panel. sort_order preserves the order items appear in the printed
+-- price list; category order is derived from the lowest sort_order in each.
+CREATE TABLE IF NOT EXISTS products (
+  code       INTEGER PRIMARY KEY,
+  category   TEXT NOT NULL,
+  name       TEXT NOT NULL,
+  unit       TEXT NOT NULL,
+  mrp        REAL NOT NULL,
+  price      REAL NOT NULL,
+  in_stock   INTEGER NOT NULL DEFAULT 1,
+  active     INTEGER NOT NULL DEFAULT 1,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  image_url  TEXT,
+  video_url  TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_products_sort ON products (active, sort_order);
+
 CREATE TABLE IF NOT EXISTS orders (
   id                TEXT PRIMARY KEY,
   order_no          TEXT NOT NULL UNIQUE,

@@ -1,9 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { CatalogueCategory } from "@/lib/catalogue";
+import type { CatalogueProduct } from "@/lib/catalogue";
 import { formatINRPlain, discountPct } from "@/lib/format";
 import { useCart } from "./CartProvider";
+
+type ListedProduct = CatalogueProduct & { inStock?: boolean };
+type ListedCategory = { name: string; slug: string; products: ListedProduct[] };
 
 function QtyStepper({ code }: { code: number }) {
   const { qtys, setQty } = useCart();
@@ -50,15 +53,37 @@ function Row({
   unit,
   mrp,
   price,
+  inStock = true,
 }: {
   code: number;
   name: string;
   unit: string;
   mrp: number;
   price: number;
+  inStock?: boolean;
 }) {
   const { qtys } = useCart();
   const qty = qtys[code] ?? 0;
+
+  // Sold-out items stay listed - customers look for them by number - but cannot
+  // be added, so the owner never has to phone back and remove a line.
+  if (!inStock) {
+    return (
+      <li className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-line/60 px-3 py-3 opacity-50 sm:px-4">
+        <div className="min-w-0">
+          <p className="truncate text-[15px] font-medium text-text">{name}</p>
+          <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-[13px] text-muted">
+            <span className="tnum">#{code}</span>
+            <span>1 {unit}</span>
+            <span className="tnum">Rs {formatINRPlain(price)}</span>
+          </p>
+        </div>
+        <span className="rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-muted">
+          Out of stock
+        </span>
+      </li>
+    );
+  }
 
   return (
     <li
@@ -92,7 +117,7 @@ function Row({
   );
 }
 
-export function Pricelist({ categories }: { categories: CatalogueCategory[] }) {
+export function Pricelist({ categories }: { categories: ListedCategory[] }) {
   const [query, setQuery] = useState("");
 
   const shown = useMemo(() => {

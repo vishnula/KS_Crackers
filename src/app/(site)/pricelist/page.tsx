@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { getCatalogue, getProducts } from "@/lib/catalogue";
 import { pageTitle } from "@/lib/shop";
 import { MIN_ORDER_VALUE, PACKING_CHARGE_PCT } from "@/lib/pricing";
 import { formatINRPlain } from "@/lib/format";
+import { listLiveProducts, groupByCategory } from "@/lib/productStore";
+import { slugify } from "@/lib/catalogue";
 import { Pricelist } from "@/components/Pricelist";
 
-// Pre-rendered: browsing never invokes the Worker, which is what keeps hosting
-// on the Cloudflare free tier. See PLAN.md section 9.5.
-export const dynamic = "force-static";
+// ISR, not fully static: the owner edits prices and stock in /admin. Pages are
+// served from the R2 cache between revalidations, so visitors do not each cost a
+// Worker invocation. Admin saves revalidate this path immediately.
+export const revalidate = 600;
 
 export const metadata: Metadata = {
   title: pageTitle("Price List 2026"),
@@ -15,9 +17,13 @@ export const metadata: Metadata = {
     "Full Diwali 2026 crackers price list with net rates, category wise. Add quantities and place your order online.",
 };
 
-export default function PricelistPage() {
-  const categories = getCatalogue();
-  const products = getProducts();
+export default async function PricelistPage() {
+  const products = await listLiveProducts();
+  const categories = groupByCategory(products).map((c) => ({
+    name: c.name,
+    slug: slugify(c.name),
+    products: c.products,
+  }));
 
   return (
     <main className="mx-auto w-full max-w-3xl">
