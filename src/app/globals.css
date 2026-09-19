@@ -1,26 +1,49 @@
 @import "tailwindcss";
 
+/* Midnight + gold. Deliberately unlike the competitors' red/clipart look. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b1020;
+  --surface: #131a2e;
+  --surface-2: #1b2340;
+  --border: #2a3355;
+  --text: #f2f4fa;
+  --muted: #9aa5c4;
+  --gold: #f5b544;
+  --gold-soft: #ffd784;
+  --ember: #ff7a3c;
+  --good: #3ddc97;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-ember: var(--ember);
+  --color-good: var(--good);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  /* Room for the sticky cart bar so it never covers the last product. */
+  padding-bottom: 8rem;
+}
+
+/* Sticky category headers inside the long pricelist. */
+.cat-head {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+/* Tabular figures keep the price column from jittering as quantities change. */
+.tnum {
+  font-variant-numeric: tabular-nums;
 }

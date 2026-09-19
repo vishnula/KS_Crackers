@@ -1,69 +1,77 @@
-import Image from "next/image";
+import { getCatalogue, getProducts } from "@/lib/catalogue";
+import { shop } from "@/lib/shop";
+import { MIN_ORDER_VALUE, PACKING_CHARGE_PCT } from "@/lib/pricing";
+import { CartProvider } from "@/components/CartProvider";
+import { Pricelist } from "@/components/Pricelist";
+import { CartBar } from "@/components/CartBar";
+import { formatINRPlain } from "@/lib/format";
+
+// Fully pre-rendered: browsing never invokes the Worker, which is what keeps
+// hosting on the Cloudflare free tier. See PLAN.md section 9.5.
+export const dynamic = "force-static";
 
 export default function Home() {
+  const categories = getCatalogue();
+  const products = getProducts();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <CartProvider products={products}>
+      <header className="border-b border-line bg-surface">
+        <div className="mx-auto max-w-3xl px-4 py-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted">
+            {shop.legalName}
           </p>
+          <h1 className="text-2xl font-black tracking-tight text-gold sm:text-3xl">
+            {shop.brandName}
+          </h1>
+          <p className="mt-0.5 text-[13px] text-muted">
+            {shop.city}, {shop.state} &middot; Price List 2026
+          </p>
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            {shop.phones.map((p) => (
+              <a
+                key={p}
+                href={`tel:+91${p}`}
+                className="tnum rounded-lg border border-line bg-surface-2 px-3 py-1.5 text-[13px] text-text"
+              >
+                {p}
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-muted">
+            <span>
+              Minimum order{" "}
+              <strong className="text-text">Rs {formatINRPlain(MIN_ORDER_VALUE)}</strong>
+            </span>
+            <span>
+              Packing charges{" "}
+              <strong className="text-text">{PACKING_CHARGE_PCT}%</strong>
+            </span>
+            <span>
+              <strong className="text-good">{products.length}</strong> items
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+      </header>
+
+      <main className="mx-auto w-full max-w-3xl">
+        <Pricelist categories={categories} />
       </main>
-    </div>
+
+      <footer className="mx-auto max-w-3xl px-4 py-8 text-[12px] leading-relaxed text-muted">
+        <p className="font-semibold text-text">{shop.displayName}</p>
+        <p className="mt-1">
+          {shop.city}, {shop.state}
+        </p>
+        <p className="mt-3">
+          Prices are per {`unit`} as printed in the 2026 price list. {PACKING_CHARGE_PCT}%
+          packing charges applicable. Orders are confirmed over phone before dispatch.
+        </p>
+      </footer>
+
+      <CartBar />
+    </CartProvider>
   );
 }
