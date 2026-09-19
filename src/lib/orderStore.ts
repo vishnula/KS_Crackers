@@ -1,9 +1,8 @@
-import type { Order, OrderItem } from "./types";
+import type { Order, OrderItem, OrderStatus, PaymentStatus } from "./types";
 
 // Storage sits behind this interface so the app never talks to a database
-// directly. Cloudflare D1 is the intended production backing (same account as
-// the Worker, native binding, no connection pooling) - see PLAN.md section 9.2.
-// Swapping to Postgres later means writing one more implementation, nothing else.
+// directly. Cloudflare D1 is the production backing - same account as the
+// Worker, native binding, no connection pooling (PLAN.md section 9.2).
 
 export type NewOrder = Omit<Order, "id" | "orderNo" | "createdAt"> & {
   items: Omit<OrderItem, "id" | "orderId">[];
@@ -11,23 +10,30 @@ export type NewOrder = Omit<Order, "id" | "orderNo" | "createdAt"> & {
 
 export type StoredOrder = Order & { items: OrderItem[] };
 
+export type StatusPatch = {
+  status?: OrderStatus;
+  paymentStatus?: PaymentStatus;
+  utr?: string | null;
+};
+
 export interface OrderStore {
   nextSequence(year: number): Promise<number>;
   create(order: NewOrder, orderNo: string, seq: number): Promise<StoredOrder>;
   getByOrderNo(orderNo: string): Promise<StoredOrder | null>;
   list(limit?: number): Promise<StoredOrder[]>;
+  updateStatus(orderNo: string, patch: StatusPatch): Promise<void>;
 }
 
 /**
- * Development store. Lives in module memory, so it is lost on restart and is NOT
- * shared between Worker isolates in production.
+ * Fallback store for when no D1 binding is present (a bare `next dev`, or tests).
  *
- * MUST be replaced with the D1 implementation before launch - orders placed
- * against this store are not durable.
+ * Pinned to globalThis because Next gives route handlers and server components
+ * separate module instances in dev - without this, an order created by the API
+ * is invisible to the confirmation page that renders straight after it.
+ *
+ * NOT durable: module memory is per-isolate on Workers. If this store is ever
+ * reached in production, orders are being lost.
  */
-// Pinned to globalThis because Next gives route handlers and server components
-// separate module instances in dev - without this, an order created by the API
-// is invisible to the confirmation page that renders straight after it.
 const globalState = globalThis as typeof globalThis & {
   __ksOrders?: Map<string, StoredOrder>;
   __ksSequences?: Map<number, number>;
@@ -65,10 +71,31 @@ class MemoryOrderStore implements OrderStore {
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .slice(0, limit);
   }
+
+  async updateStatus(orderNo: string, patch: StatusPatch): Promise<void> {
+    const order = this.orders.get(orderNo);
+    if (!order) return;
+    if (patch.status) order.status = patch.status;
+    if (patch.paymentStatus) order.paymentStatus = patch.paymentStatus;
+    if (patch.utr !== undefined) order.utr = patch.utr;
+  }
 }
 
-const store: OrderStore = new MemoryOrderStore();
+export async function getOrderStore(): Promise<OrderStore> {
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const { env } = await getCloudflareContext({ async: true });
+    const db = (env as { DB?: unknown }).DB;
+    if (db) {
+      const { D1OrderStore } = await import("./d1OrderStore");
+      return new D1OrderStore(db as ConstructorParameters<typeof D1OrderStore>[0]);
+    }
+  } catch {
+    // No Cloudflare context (plain `next dev` without bindings) - fall through.
+  }
+  return new MemoryOrderStore();
+}
 
-export function getOrderStore(): OrderStore {
-  return store;
+export function isDurable(store: OrderStore): boolean {
+  return !(store instanceof MemoryOrderStore);
 }

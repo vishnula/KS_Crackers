@@ -8,6 +8,14 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ks-crackers-db",
+      // Replace with the id printed by: npx wrangler d1 create ks-crackers-db
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ],
   "observability": {
     "enabled": true
   }

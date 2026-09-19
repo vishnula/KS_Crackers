@@ -3,6 +3,7 @@ import { getProductsByCode } from "@/lib/catalogue";
 import { priceOrder } from "@/lib/pricing";
 import { orderNo as buildOrderNo, withUniquePaise } from "@/lib/format";
 import { getOrderStore } from "@/lib/orderStore";
+import { notifyOwner } from "@/lib/notify";
 
 type Payload = {
   customerName?: string;
@@ -77,7 +78,7 @@ export async function POST(request: Request) {
 
   // Allocate the order number only once the order is known good, so rejected
   // attempts do not burn sequence numbers and leave gaps in the owner's list.
-  const store = getOrderStore();
+  const store = await getOrderStore();
   const year = new Date().getFullYear();
   const seq = await store.nextSequence(year);
   const orderNo = buildOrderNo(year, seq);
@@ -120,10 +121,12 @@ export async function POST(request: Request) {
     seq,
   );
 
-  // TODO: notify the owner here (PWA push + email). The DB write above is the
-  // moment of truth; alerts are best-effort on top - PLAN.md 3.2b.
+  // Best-effort and deliberately awaited-with-catch: the order is already safely
+  // stored, so a dead mail provider must not turn a good order into an error.
+  await notifyOwner(order).catch(() => []);
 
   return NextResponse.json({ orderNo: order.orderNo, total: order.total }, { status: 201 });
 }
 
 type OrderUnit = import("@/lib/types").Unit;
+

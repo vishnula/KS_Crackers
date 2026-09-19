@@ -15,7 +15,8 @@ export default async function OrderPage({
   params: Promise<{ orderNo: string }>;
 }) {
   const { orderNo } = await params;
-  const order = await getOrderStore().getByOrderNo(orderNo);
+  const store = await getOrderStore();
+  const order = await store.getByOrderNo(orderNo);
   if (!order) notFound();
 
   const vpa = process.env.NEXT_PUBLIC_UPI_VPA ?? "";

@@ -1,11 +1,6 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { shop, pageTitle } from "@/lib/shop";
-import { CartProvider } from "@/components/CartProvider";
-import { CartBar } from "@/components/CartBar";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
-import { WhatsAppFab } from "@/components/WhatsAppFab";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,6 +21,8 @@ export const metadata: Metadata = {
   ],
 };
 
+// Only html/body live here. Customer chrome is in (site)/layout.tsx and the
+// admin panel has its own, so the two never share a header or a cart bar.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // Browser extensions inject attributes onto <html> before React loads; this
@@ -35,17 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${geistSans.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
-        {/* Cart lives above the router so it survives navigation between pages. */}
-        <CartProvider>
-          <SiteHeader />
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
-          <WhatsAppFab />
-          <CartBar />
-        </CartProvider>
-      </body>
+      <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
 }
-
