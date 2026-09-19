@@ -5,13 +5,41 @@ import { useMemo, useRef, useState } from "react";
 import type { AdminProduct } from "@/lib/productStore";
 import { formatINRPlain } from "@/lib/format";
 import { downloadPricelist, parsePricelist } from "@/lib/adminSheet";
+import { resizeImage } from "@/lib/imageResize";
 
 function ProductRow({ product, onSaved }: { product: AdminProduct; onSaved: () => void }) {
   const [price, setPrice] = useState(String(product.price));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const photoInput = useRef<HTMLInputElement>(null);
 
   const dirty = Number(price) !== product.price;
+
+  async function onPhoto(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setBusy(true);
+    setError("");
+    try {
+      const { blob } = await resizeImage(file);
+      const body = new FormData();
+      body.append("code", String(product.code));
+      body.append("file", new File([blob], `${product.code}.jpg`, { type: "image/jpeg" }));
+
+      const res = await fetch("/api/admin/products/image", { method: "POST", body });
+      if (!res.ok) {
+        const json = (await res.json()) as { error?: string };
+        setError(json.error ?? "Upload failed");
+      } else {
+        onSaved();
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    }
+    setBusy(false);
+    if (photoInput.current) photoInput.current.value = "";
+  }
 
   async function patch(body: Record<string, unknown>) {
     setBusy(true);
@@ -35,7 +63,34 @@ function ProductRow({ product, onSaved }: { product: AdminProduct; onSaved: () =
   }
 
   return (
-    <li className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-line/60 px-3 py-3">
+    <li className="grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b border-line/60 px-3 py-3">
+      <button
+        type="button"
+        disabled={busy}
+        onClick={() => photoInput.current?.click()}
+        title={product.imageUrl ? "Replace photo" : "Add photo"}
+        className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-line bg-surface-2 text-[10px] text-muted disabled:opacity-40"
+      >
+        {product.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={product.imageUrl}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          "+ photo"
+        )}
+      </button>
+      <input
+        ref={photoInput}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={onPhoto}
+        className="hidden"
+      />
+
       <div className="min-w-0">
         <p className="truncate text-[14px] font-medium text-text">
           <span className="tnum text-muted">#{product.code}</span> {product.name}

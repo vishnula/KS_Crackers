@@ -22,6 +22,15 @@
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
       "bucket_name": "ks-crackers-cache"
+    },
+    // Product photos. Make this bucket PUBLIC (r2.dev URL or a custom domain) so
+    // Cloudflare serves the images directly - routing them through the Worker
+    // would cost an invocation per image and blow the free tier on a photo-heavy
+    // price list. Only the upload itself touches the Worker.
+    // npx wrangler r2 bucket create ks-crackers-images
+    {
+      "binding": "PRODUCT_IMAGES",
+      "bucket_name": "ks-crackers-images"
     }
   ],
   "observability": {

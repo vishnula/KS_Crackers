@@ -12,6 +12,7 @@ export type ProductPatch = {
   mrp?: number;
   inStock?: boolean;
   active?: boolean;
+  imageUrl?: string | null;
 };
 
 type ProductRow = {
@@ -24,12 +25,14 @@ type ProductRow = {
   in_stock: number;
   active: number;
   sort_order: number;
+  image_url: string | null;
 };
 
 export type AdminProduct = CatalogueProduct & {
   inStock: boolean;
   active: boolean;
   sortOrder: number;
+  imageUrl: string | null;
 };
 
 function toProduct(row: ProductRow): AdminProduct {
@@ -43,6 +46,7 @@ function toProduct(row: ProductRow): AdminProduct {
     inStock: row.in_stock === 1,
     active: row.active === 1,
     sortOrder: row.sort_order,
+    imageUrl: row.image_url || null,
   };
 }
 
@@ -62,6 +66,7 @@ function seedFallback(): AdminProduct[] {
     inStock: true,
     active: true,
     sortOrder: index,
+    imageUrl: null,
   }));
 }
 
@@ -90,8 +95,8 @@ export async function updateProduct(code: number, patch: ProductPatch): Promise<
   if (!db) return false;
 
   const sets: string[] = [];
-  const values: (string | number)[] = [];
-  const push = (column: string, value: string | number) => {
+  const values: (string | number | null)[] = [];
+  const push = (column: string, value: string | number | null) => {
     sets.push(`${column} = ?${sets.length + 1}`);
     values.push(value);
   };
@@ -100,6 +105,7 @@ export async function updateProduct(code: number, patch: ProductPatch): Promise<
   if (patch.mrp !== undefined) push("mrp", patch.mrp);
   if (patch.inStock !== undefined) push("in_stock", patch.inStock ? 1 : 0);
   if (patch.active !== undefined) push("active", patch.active ? 1 : 0);
+  if (patch.imageUrl !== undefined) push("image_url", patch.imageUrl);
   if (sets.length === 0) return false;
 
   const result = await db
@@ -159,3 +165,4 @@ export function groupByCategory(products: AdminProduct[]) {
   }
   return [...byCategory.entries()].map(([name, list]) => ({ name, products: list }));
 }
+

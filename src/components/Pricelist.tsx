@@ -5,7 +5,7 @@ import type { CatalogueProduct } from "@/lib/catalogue";
 import { formatINRPlain, discountPct } from "@/lib/format";
 import { useCart } from "./CartProvider";
 
-type ListedProduct = CatalogueProduct & { inStock?: boolean };
+type ListedProduct = CatalogueProduct & { inStock?: boolean; imageUrl?: string | null };
 type ListedCategory = { name: string; slug: string; products: ListedProduct[] };
 
 function QtyStepper({ code }: { code: number }) {
@@ -54,6 +54,8 @@ function Row({
   mrp,
   price,
   inStock = true,
+  imageUrl,
+  onZoom,
 }: {
   code: number;
   name: string;
@@ -61,16 +63,32 @@ function Row({
   mrp: number;
   price: number;
   inStock?: boolean;
+  imageUrl?: string | null;
+  onZoom: (image: { url: string; name: string }) => void;
 }) {
   const { qtys } = useCart();
   const qty = qtys[code] ?? 0;
+
+  const thumb = imageUrl ? (
+    <button
+      type="button"
+      onClick={() => onZoom({ url: imageUrl, name })}
+      aria-label={`View ${name}`}
+      className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-line bg-surface-2"
+    >
+      {/* Served straight from public R2, already resized on upload. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={imageUrl} alt={name} loading="lazy" className="h-full w-full object-cover" />
+    </button>
+  ) : null;
 
   // Sold-out items stay listed - customers look for them by number - but cannot
   // be added, so the owner never has to phone back and remove a line.
   if (!inStock) {
     return (
-      <li className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-line/60 px-3 py-3 opacity-50 sm:px-4">
-        <div className="min-w-0">
+      <li className="flex items-center gap-3 border-b border-line/60 px-3 py-3 opacity-50 sm:px-4">
+        {thumb}
+        <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-medium text-text">{name}</p>
           <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-[13px] text-muted">
             <span className="tnum">#{code}</span>
@@ -87,11 +105,12 @@ function Row({
 
   return (
     <li
-      className={`grid grid-cols-[1fr_auto] items-center gap-3 border-b border-line/60 px-3 py-3 sm:px-4 ${
+      className={`flex items-center gap-3 border-b border-line/60 px-3 py-3 sm:px-4 ${
         qty > 0 ? "bg-gold/5" : ""
       }`}
     >
-      <div className="min-w-0">
+      {thumb}
+      <div className="min-w-0 flex-1">
         <p className="truncate text-[15px] font-medium text-text">{name}</p>
         <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-[13px] text-muted">
           <span className="tnum">#{code}</span>
@@ -117,8 +136,44 @@ function Row({
   );
 }
 
+function Lightbox({
+  image,
+  onClose,
+}: {
+  image: { url: string; name: string };
+  onClose: () => void;
+}) {
+  return (
+    <div
+      role="dialog"
+      aria-label={image.name}
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={image.url}
+        alt={image.name}
+        className="max-h-[80vh] max-w-full rounded-xl object-contain"
+      />
+      <p className="absolute bottom-6 left-0 right-0 px-4 text-center text-[14px] text-white">
+        {image.name}
+      </p>
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close"
+        className="absolute right-4 top-4 h-11 w-11 rounded-full bg-white/15 text-xl text-white"
+      >
+        &times;
+      </button>
+    </div>
+  );
+}
+
 export function Pricelist({ categories }: { categories: ListedCategory[] }) {
   const [query, setQuery] = useState("");
+  const [zoomed, setZoomed] = useState<{ url: string; name: string } | null>(null);
 
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -160,7 +215,7 @@ export function Pricelist({ categories }: { categories: ListedCategory[] }) {
           </h2>
           <ul>
             {cat.products.map((p) => (
-              <Row key={p.code} {...p} />
+              <Row key={p.code} {...p} onZoom={setZoomed} />
             ))}
           </ul>
         </section>
@@ -171,6 +226,8 @@ export function Pricelist({ categories }: { categories: ListedCategory[] }) {
           Nothing matches &ldquo;{query}&rdquo;. Try the item number instead.
         </p>
       )}
+
+      {zoomed && <Lightbox image={zoomed} onClose={() => setZoomed(null)} />}
     </>
   );
 }
