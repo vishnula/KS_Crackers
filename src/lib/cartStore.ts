@@ -44,6 +44,10 @@ export function parse(snapshot: string): Qtys {
   }
 }
 
+export function clearCart(): void {
+  write({});
+}
+
 export function write(qtys: Qtys): void {
   try {
     localStorage.setItem(KEY, JSON.stringify(qtys));

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { formatINRPlain } from "@/lib/format";
 import { useCart } from "./CartProvider";
 
@@ -7,8 +9,10 @@ import { useCart } from "./CartProvider";
 // to the bottom of a 796 KB page to find out what your order costs.
 export function CartBar() {
   const { totals, clear } = useCart();
+  const pathname = usePathname();
 
-  if (totals.itemCount === 0) return null;
+  // The checkout page shows its own summary; a second one would just be noise.
+  if (totals.itemCount === 0 || pathname === "/checkout") return null;
 
   const { itemCount, savings, packingChargePct, total, shortfall } = totals;
 
@@ -44,13 +48,21 @@ export function CartBar() {
           >
             Clear
           </button>
-          <button
-            type="button"
-            disabled={shortfall > 0}
-            className="h-11 shrink-0 rounded-xl bg-gold px-4 text-[14px] font-bold text-[#1a1200] disabled:opacity-40"
-          >
-            Place Order
-          </button>
+          {shortfall > 0 ? (
+            <span
+              aria-disabled="true"
+              className="flex h-11 shrink-0 items-center rounded-xl bg-gold px-4 text-[14px] font-bold text-[#1a1200] opacity-40"
+            >
+              Place Order
+            </span>
+          ) : (
+            <Link
+              href="/checkout"
+              className="flex h-11 shrink-0 items-center rounded-xl bg-gold px-4 text-[14px] font-bold text-[#1a1200]"
+            >
+              Place Order
+            </Link>
+          )}
         </div>
       </div>
     </div>

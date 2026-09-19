@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { shop, pageTitle } from "@/lib/shop";
-import { getProducts } from "@/lib/catalogue";
 import { CartProvider } from "@/components/CartProvider";
 import { CartBar } from "@/components/CartBar";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -38,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         {/* Cart lives above the router so it survives navigation between pages. */}
-        <CartProvider products={getProducts()}>
+        <CartProvider>
           <SiteHeader />
           <div className="flex-1">{children}</div>
           <SiteFooter />
@@ -49,3 +48,4 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     </html>
   );
 }
+

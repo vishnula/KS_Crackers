@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
-import type { CatalogueProduct } from "@/lib/catalogue";
 import { priceOrder, type OrderTotals } from "@/lib/pricing";
 import {
   getServerSnapshot,
@@ -11,6 +10,18 @@ import {
   write,
   type Qtys,
 } from "@/lib/cartStore";
+import raw from "@/data/products.json";
+
+// Imported here rather than passed down from the server layout. As a prop it was
+// serialised into the RSC payload of every single page - the Contact page shipped
+// 41 KB for three phone numbers. As a client import it lands in one cached JS
+// chunk instead. Only the numbers are needed; totals never render product names.
+const PRICES: Record<string, { mrp: number; price: number }> = Object.fromEntries(
+  (raw as { code: number; mrp: number; price: number }[]).map((p) => [
+    String(p.code),
+    { mrp: p.mrp, price: p.price },
+  ]),
+);
 
 type CartValue = {
   qtys: Qtys;
@@ -21,29 +32,16 @@ type CartValue = {
 
 const CartContext = createContext<CartValue | null>(null);
 
-export function CartProvider({
-  products,
-  children,
-}: {
-  products: CatalogueProduct[];
-  children: React.ReactNode;
-}) {
+export function CartProvider({ children }: { children: React.ReactNode }) {
   // Server and first client render both see an empty cart, so the pre-rendered
   // HTML stays static and cacheable; React swaps in the stored cart after hydration.
   const snapshot = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const qtys = useMemo(() => parse(snapshot), [snapshot]);
 
   const value = useMemo<CartValue>(() => {
-    const lines = products
-      .filter((p) => (qtys[p.code] ?? 0) > 0)
-      .map((p) => ({
-        code: String(p.code),
-        name: p.name,
-        unit: p.unit,
-        mrp: p.mrp,
-        price: p.price,
-        qty: qtys[p.code],
-      }));
+    const lines = Object.entries(qtys)
+      .filter(([code, qty]) => qty > 0 && PRICES[code])
+      .map(([code, qty]) => ({ code, ...PRICES[code], qty }));
 
     return {
       qtys,
@@ -56,7 +54,7 @@ export function CartProvider({
       },
       clear: () => write({}),
     };
-  }, [products, qtys]);
+  }, [qtys]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

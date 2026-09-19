@@ -7,22 +7,22 @@ import { withUniquePaise } from "./format";
 export const PACKING_CHARGE_PCT = Number(process.env.NEXT_PUBLIC_PACKING_CHARGE_PCT ?? 3);
 export const MIN_ORDER_VALUE = Number(process.env.NEXT_PUBLIC_MIN_ORDER_VALUE ?? 2500);
 
+// Only the numbers matter for pricing. Callers may pass richer lines (the order
+// API passes name and unit); the generic below carries those fields through.
 export type PriceableLine = {
   code: string;
-  name: string;
-  unit: string;
   mrp: number;
   price: number;
   qty: number;
 };
 
-export type PricedLine = PriceableLine & {
+export type PricedLine<T extends PriceableLine = PriceableLine> = T & {
   lineTotal: number;
   lineSavings: number;
 };
 
-export type OrderTotals = {
-  lines: PricedLine[];
+export type OrderTotals<T extends PriceableLine = PriceableLine> = {
+  lines: PricedLine<T>[];
   itemCount: number;
   mrpTotal: number;
   subtotal: number;
@@ -37,10 +37,10 @@ export type OrderTotals = {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
-export function priceOrder(
-  lines: PriceableLine[],
+export function priceOrder<T extends PriceableLine>(
+  lines: T[],
   opts: { orderSeq?: number; packingChargePct?: number; minOrderValue?: number } = {},
-): OrderTotals {
+): OrderTotals<T> {
   const packingChargePct = opts.packingChargePct ?? PACKING_CHARGE_PCT;
   const minOrderValue = opts.minOrderValue ?? MIN_ORDER_VALUE;
 
