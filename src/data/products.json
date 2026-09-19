@@ -1,0 +1,938 @@
+[
+  {
+    "code": 1,
+    "category": "ONE SOUND CRACKERS",
+    "name": "2 3/4\" KURUVI / BHEEM",
+    "unit": "Pkt",
+    "price": 9,
+    "mrp": 90
+  },
+  {
+    "code": 2,
+    "category": "ONE SOUND CRACKERS",
+    "name": "3 ½\" LAKSHMI",
+    "unit": "Pkt",
+    "price": 18,
+    "mrp": 180
+  },
+  {
+    "code": 3,
+    "category": "ONE SOUND CRACKERS",
+    "name": "4\" LAKSHMI",
+    "unit": "Pkt",
+    "price": 23,
+    "mrp": 230
+  },
+  {
+    "code": 4,
+    "category": "ONE SOUND CRACKERS",
+    "name": "4\" GOLD LAKSHMI",
+    "unit": "Pkt",
+    "price": 35,
+    "mrp": 350
+  },
+  {
+    "code": 5,
+    "category": "ONE SOUND CRACKERS",
+    "name": "6\" JALLIKATTU",
+    "unit": "Pkt",
+    "price": 75,
+    "mrp": 750
+  },
+  {
+    "code": 6,
+    "category": "ONE SOUND CRACKERS",
+    "name": "2\" SOUND",
+    "unit": "Pkt",
+    "price": 35,
+    "mrp": 350
+  },
+  {
+    "code": 7,
+    "category": "ONE SOUND CRACKERS",
+    "name": "3\" SOUND",
+    "unit": "Pkt",
+    "price": 40,
+    "mrp": 400
+  },
+  {
+    "code": 8,
+    "category": "FLOWER POTS",
+    "name": "FLOWER POT BIG (10 PCS)",
+    "unit": "Box",
+    "price": 60,
+    "mrp": 600
+  },
+  {
+    "code": 9,
+    "category": "FLOWER POTS",
+    "name": "FLOWER POT SPECIAL (10 PCS)",
+    "unit": "Box",
+    "price": 100,
+    "mrp": 1000
+  },
+  {
+    "code": 10,
+    "category": "FLOWER POTS",
+    "name": "FLOWER POT ASHOKA (10 PCS)",
+    "unit": "Box",
+    "price": 110,
+    "mrp": 1100
+  },
+  {
+    "code": 11,
+    "category": "FLOWER POTS",
+    "name": "FLOWER POT DELUXE (10 PCS)",
+    "unit": "Box",
+    "price": 140,
+    "mrp": 1400
+  },
+  {
+    "code": 12,
+    "category": "FLOWER POTS",
+    "name": "COLOUR KOTI (5 PCS)",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 13,
+    "category": "FLOWER POTS",
+    "name": "DAZZLING POT (10 PCS)",
+    "unit": "Box",
+    "price": 220,
+    "mrp": 2200
+  },
+  {
+    "code": 14,
+    "category": "GROUND CHAKKAR",
+    "name": "GROUND CHAKKAR BIG (UV) (10 PCS)",
+    "unit": "Box",
+    "price": 70,
+    "mrp": 700
+  },
+  {
+    "code": 15,
+    "category": "GROUND CHAKKAR",
+    "name": "GROUND CHAKKAR SPECIAL (UV) (10 PCS)",
+    "unit": "Box",
+    "price": 95,
+    "mrp": 950
+  },
+  {
+    "code": 16,
+    "category": "GROUND CHAKKAR",
+    "name": "GROUND CHAKKAR ASHOKA (UV) (10 PCS)",
+    "unit": "Box",
+    "price": 130,
+    "mrp": 1300
+  },
+  {
+    "code": 17,
+    "category": "GROUND CHAKKAR",
+    "name": "GROUND CHAKKAR DELUXE (UV) (10 PCS)",
+    "unit": "Box",
+    "price": 160,
+    "mrp": 1600
+  },
+  {
+    "code": 18,
+    "category": "GROUND CHAKKAR",
+    "name": "WING WHEEL MAX (UV) (10 PCS)",
+    "unit": "Box",
+    "price": 230,
+    "mrp": 2300
+  },
+  {
+    "code": 19,
+    "category": "GROUND CHAKKAR",
+    "name": "WIN WHEEL SUPER MAX (UV) (10 PCS)",
+    "unit": "Box",
+    "price": 280,
+    "mrp": 2800
+  },
+  {
+    "code": 20,
+    "category": "GROUND CHAKKAR",
+    "name": "WHISTLING WHEEL (UV) (5 PCS)",
+    "unit": "Box",
+    "price": 200,
+    "mrp": 2000
+  },
+  {
+    "code": 21,
+    "category": "BOMBS",
+    "name": "BULLET BOMB DLX (10 PCS)",
+    "unit": "Box",
+    "price": 55,
+    "mrp": 550
+  },
+  {
+    "code": 22,
+    "category": "BOMBS",
+    "name": "KING KONG BOMB (10 PCS)",
+    "unit": "Box",
+    "price": 90,
+    "mrp": 900
+  },
+  {
+    "code": 23,
+    "category": "BOMBS",
+    "name": "POKMAN BOMB (10 PCS)",
+    "unit": "Box",
+    "price": 160,
+    "mrp": 1600
+  },
+  {
+    "code": 24,
+    "category": "BOMBS",
+    "name": "DIGITAL BOMB (10 PCS)",
+    "unit": "Box",
+    "price": 250,
+    "mrp": 2500
+  },
+  {
+    "code": 25,
+    "category": "BOMBS",
+    "name": "PAPER BOMB 1/4 KG (1 PCS)",
+    "unit": "Box",
+    "price": 60,
+    "mrp": 600
+  },
+  {
+    "code": 26,
+    "category": "BOMBS",
+    "name": "PAPER BOMB ½ KG (1 PCS)",
+    "unit": "Pcs",
+    "price": 120,
+    "mrp": 1200
+  },
+  {
+    "code": 27,
+    "category": "BOMBS",
+    "name": "PAPER BOMB 1 KG (1 PCS)",
+    "unit": "Pcs",
+    "price": 240,
+    "mrp": 2400
+  },
+  {
+    "code": 28,
+    "category": "BOMBS",
+    "name": "GUN OUT (1 PCS)",
+    "unit": "Pcs",
+    "price": 220,
+    "mrp": 2200
+  },
+  {
+    "code": 29,
+    "category": "BIJILI CRACKERS",
+    "name": "RED BIJILI (50 PCS)",
+    "unit": "Pkt",
+    "price": 35,
+    "mrp": 350
+  },
+  {
+    "code": 30,
+    "category": "BIJILI CRACKERS",
+    "name": "RED BIJILI (100 PCS)",
+    "unit": "Pkt",
+    "price": 70,
+    "mrp": 700
+  },
+  {
+    "code": 31,
+    "category": "ROCKETS",
+    "name": "2 SOUND ROCKET (10 PCS)",
+    "unit": "Box",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 32,
+    "category": "ROCKETS",
+    "name": "3 SOUND ROCKET (10 PCS)",
+    "unit": "Box",
+    "price": 160,
+    "mrp": 1600
+  },
+  {
+    "code": 33,
+    "category": "ROCKETS",
+    "name": "LUNIK ROCKET (10 PCS)",
+    "unit": "Box",
+    "price": 160,
+    "mrp": 1600
+  },
+  {
+    "code": 34,
+    "category": "ROCKETS",
+    "name": "MUSICAL ROCKET (5 PCS)",
+    "unit": "Box",
+    "price": 190,
+    "mrp": 1900
+  },
+  {
+    "code": 35,
+    "category": "TWINKLING STAR & TORCH",
+    "name": "1 ½\" TWINKLING STAR (10 PCS)",
+    "unit": "Box",
+    "price": 40,
+    "mrp": 400
+  },
+  {
+    "code": 36,
+    "category": "TWINKLING STAR & TORCH",
+    "name": "4\" TWINKLING STAR (10 PCS)",
+    "unit": "Box",
+    "price": 90,
+    "mrp": 900
+  },
+  {
+    "code": 37,
+    "category": "TWINKLING STAR & TORCH",
+    "name": "50 SEC TORCH (5 PCS)",
+    "unit": "Box",
+    "price": 170,
+    "mrp": 1700
+  },
+  {
+    "code": 38,
+    "category": "TWINKLING STAR & TORCH",
+    "name": "RED FLARE 100 SEC TORCH (5 PCS)",
+    "unit": "Box",
+    "price": 230,
+    "mrp": 2300
+  },
+  {
+    "code": 39,
+    "category": "TWINKLING STAR & TORCH",
+    "name": "SIVAKASI SPECIAL PENCIL (2 PCS)",
+    "unit": "Box",
+    "price": 200,
+    "mrp": 2000
+  },
+  {
+    "code": 40,
+    "category": "TWINKLING STAR & TORCH",
+    "name": "COLOR SMOKE (3 PCS)",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 41,
+    "category": "FOUNTAIN & SIREN",
+    "name": "SUN DROPS (3 PCS)",
+    "unit": "Box",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 42,
+    "category": "FOUNTAIN & SIREN",
+    "name": "MOON DROPS (3 PCS)",
+    "unit": "Box",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 43,
+    "category": "FOUNTAIN & SIREN",
+    "name": "TRICOLOR ( 5 PCS)",
+    "unit": "Box",
+    "price": 250,
+    "mrp": 2500
+  },
+  {
+    "code": 44,
+    "category": "FOUNTAIN & SIREN",
+    "name": "ICE FOUNTAIN (3 PCS)",
+    "unit": "Box",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 45,
+    "category": "FOUNTAIN & SIREN",
+    "name": "DRAGON SHOWER (1 PCS)",
+    "unit": "Box",
+    "price": 120,
+    "mrp": 1200
+  },
+  {
+    "code": 46,
+    "category": "FOUNTAIN & SIREN",
+    "name": "CRACK JACK (2 PCS)",
+    "unit": "Box",
+    "price": 260,
+    "mrp": 2600
+  },
+  {
+    "code": 47,
+    "category": "FOUNTAIN & SIREN",
+    "name": "POWER RANGER (5 PCS)",
+    "unit": "Box",
+    "price": 200,
+    "mrp": 2000
+  },
+  {
+    "code": 48,
+    "category": "FOUNTAIN & SIREN",
+    "name": "SIZZLER (1 PCS)",
+    "unit": "Box",
+    "price": 130,
+    "mrp": 1300
+  },
+  {
+    "code": 49,
+    "category": "FOUNTAIN & SIREN",
+    "name": "CONE (1 PCS)",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 50,
+    "category": "FOUNTAIN & SIREN",
+    "name": "FROZEN (1 PCS)",
+    "unit": "Box",
+    "price": 130,
+    "mrp": 1300
+  },
+  {
+    "code": 51,
+    "category": "FOUNTAIN & SIREN",
+    "name": "TINY POTS (5 PCS)",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 52,
+    "category": "CHILDREN'S CHOICE",
+    "name": "CHIT PUT (10 PCS)",
+    "unit": "Box",
+    "price": 50,
+    "mrp": 500
+  },
+  {
+    "code": 53,
+    "category": "CHILDREN'S CHOICE",
+    "name": "INSTA FLASH (5 PCS)",
+    "unit": "Box",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 54,
+    "category": "CHILDREN'S CHOICE",
+    "name": "PAMBARAM (10 PCS)",
+    "unit": "Box",
+    "price": 120,
+    "mrp": 1200
+  },
+  {
+    "code": 55,
+    "category": "CHILDREN'S CHOICE",
+    "name": "DRONE (5 PCS)",
+    "unit": "Box",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 56,
+    "category": "CHILDREN'S CHOICE",
+    "name": "4 X 4 WHEEL (4 PCS)",
+    "unit": "Box",
+    "price": 160,
+    "mrp": 1600
+  },
+  {
+    "code": 57,
+    "category": "CHILDREN'S CHOICE",
+    "name": "HELICOPTER (5 PCS)",
+    "unit": "Box",
+    "price": 120,
+    "mrp": 1200
+  },
+  {
+    "code": 58,
+    "category": "CHILDREN'S CHOICE",
+    "name": "BUTTERFLY (10 PCS)",
+    "unit": "Box",
+    "price": 140,
+    "mrp": 1400
+  },
+  {
+    "code": 59,
+    "category": "CHILDREN'S CHOICE",
+    "name": "MAGIC PEACOCK (1 PCS)",
+    "unit": "Box",
+    "price": 120,
+    "mrp": 1200
+  },
+  {
+    "code": 60,
+    "category": "CHILDREN'S CHOICE",
+    "name": "BADA PEACOCK (1 PCS)",
+    "unit": "Box",
+    "price": 350,
+    "mrp": 3500
+  },
+  {
+    "code": 61,
+    "category": "CHILDREN'S CHOICE",
+    "name": "MEGA PEACOCK (1 PCS)",
+    "unit": "Box",
+    "price": 400,
+    "mrp": 4000
+  },
+  {
+    "code": 62,
+    "category": "SINGLE SKY SHOTS",
+    "name": "7 SHOT (5 PCS)",
+    "unit": "Box",
+    "price": 100,
+    "mrp": 1000
+  },
+  {
+    "code": 63,
+    "category": "SINGLE SKY SHOTS",
+    "name": "1\" CHOTA FANCY (1 PCS)",
+    "unit": "Box",
+    "price": 60,
+    "mrp": 600
+  },
+  {
+    "code": 64,
+    "category": "SINGLE SKY SHOTS",
+    "name": "2 ½\" (SINGLE) PIPE (1 PCS)",
+    "unit": "Box",
+    "price": 130,
+    "mrp": 1300
+  },
+  {
+    "code": 65,
+    "category": "SINGLE SKY SHOTS",
+    "name": "2 ½\" (3 PIECE) (3 PCS)",
+    "unit": "Box",
+    "price": 300,
+    "mrp": 3000
+  },
+  {
+    "code": 66,
+    "category": "SINGLE SKY SHOTS",
+    "name": "3 ½\" FANCY (1 PCS)",
+    "unit": "Box",
+    "price": 280,
+    "mrp": 2800
+  },
+  {
+    "code": 67,
+    "category": "SINGLE SKY SHOTS",
+    "name": "4\" NAYAGARA FALLS (1 PCS)",
+    "unit": "Box",
+    "price": 300,
+    "mrp": 3000
+  },
+  {
+    "code": 68,
+    "category": "SINGLE SKY SHOTS",
+    "name": "4\" MULTI COLOR (1 PCS)",
+    "unit": "Box",
+    "price": 300,
+    "mrp": 3000
+  },
+  {
+    "code": 69,
+    "category": "SINGLE SKY SHOTS",
+    "name": "4\" (TWO PIECE) (2 PCS)",
+    "unit": "Box",
+    "price": 600,
+    "mrp": 6000
+  },
+  {
+    "code": 71,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "12 SHOTS MULTI COLOR",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 72,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "15 SHOTS MULTI COLOR",
+    "unit": "Box",
+    "price": 210,
+    "mrp": 2100
+  },
+  {
+    "code": 73,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "30 SHOTS MULTI COLOR",
+    "unit": "Box",
+    "price": 400,
+    "mrp": 4000
+  },
+  {
+    "code": 74,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "30 SHOTS MULTI COLOR (SPECIAL)",
+    "unit": "Box",
+    "price": 450,
+    "mrp": 4500
+  },
+  {
+    "code": 75,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "60 SHOTS MULTI COLOR (SPECIAL)",
+    "unit": "Box",
+    "price": 900,
+    "mrp": 9000
+  },
+  {
+    "code": 76,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "120 SHOTS MULTI COLOR (SPECIAL)",
+    "unit": "Box",
+    "price": 1800,
+    "mrp": 18000
+  },
+  {
+    "code": 77,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "240 SHOTS MULTI COLOR (SPECIAL)",
+    "unit": "Box",
+    "price": 3600,
+    "mrp": 36000
+  },
+  {
+    "code": 78,
+    "category": "REPEATING MULTI COLOR SHOTS",
+    "name": "10 X 10 MULTI COLOR SHOT",
+    "unit": "Box",
+    "price": 3300,
+    "mrp": 33000
+  },
+  {
+    "code": 79,
+    "category": "WALA CRACKERS",
+    "name": "28 CHORSA",
+    "unit": "Pkt",
+    "price": 15,
+    "mrp": 150
+  },
+  {
+    "code": 80,
+    "category": "WALA CRACKERS",
+    "name": "100 WALA",
+    "unit": "Pkt",
+    "price": 50,
+    "mrp": 500
+  },
+  {
+    "code": 81,
+    "category": "WALA CRACKERS",
+    "name": "100 WALA",
+    "unit": "Pkt",
+    "price": 100,
+    "mrp": 1000
+  },
+  {
+    "code": 82,
+    "category": "WALA CRACKERS",
+    "name": "50 DELUXE",
+    "unit": "Pkt",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 83,
+    "category": "WALA CRACKERS",
+    "name": "100 DELUXE",
+    "unit": "Pkt",
+    "price": 300,
+    "mrp": 3000
+  },
+  {
+    "code": 84,
+    "category": "WALA CRACKERS",
+    "name": "1000 WALA SPECIAL",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 85,
+    "category": "WALA CRACKERS",
+    "name": "2000 WALA SPECIAL",
+    "unit": "Box",
+    "price": 360,
+    "mrp": 3600
+  },
+  {
+    "code": 86,
+    "category": "WALA CRACKERS",
+    "name": "5000 WALA SPECIAL",
+    "unit": "Box",
+    "price": 900,
+    "mrp": 9000
+  },
+  {
+    "code": 87,
+    "category": "WALA CRACKERS",
+    "name": "10000 WALA SPECIAL",
+    "unit": "Box",
+    "price": 1800,
+    "mrp": 18000
+  },
+  {
+    "code": 88,
+    "category": "DIWALI SPECIAL",
+    "name": "APPLE TREE (3 PCS)",
+    "unit": "Box",
+    "price": 150,
+    "mrp": 1500
+  },
+  {
+    "code": 89,
+    "category": "DIWALI SPECIAL",
+    "name": "WATER QUEEN (H2O) BIG (1 PCS)",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 90,
+    "category": "DIWALI SPECIAL",
+    "name": "HYBRID",
+    "unit": "Box",
+    "price": 200,
+    "mrp": 2000
+  },
+  {
+    "code": 91,
+    "category": "DIWALI SPECIAL",
+    "name": "PEATOS TIN",
+    "unit": "Box",
+    "price": 130,
+    "mrp": 1300
+  },
+  {
+    "code": 92,
+    "category": "DIWALI SPECIAL",
+    "name": "4\" TIN",
+    "unit": "Box",
+    "price": 160,
+    "mrp": 1600
+  },
+  {
+    "code": 93,
+    "category": "DIWALI SPECIAL",
+    "name": "EMU EGG (2 PCS)",
+    "unit": "Box",
+    "price": 180,
+    "mrp": 1800
+  },
+  {
+    "code": 94,
+    "category": "DIWALI SPECIAL",
+    "name": "TRISULAM (2 PCS)",
+    "unit": "Box",
+    "price": 280,
+    "mrp": 2800
+  },
+  {
+    "code": 95,
+    "category": "DIWALI SPECIAL",
+    "name": "OLD IS GOLD (10 PCS)",
+    "unit": "Box",
+    "price": 250,
+    "mrp": 2500
+  },
+  {
+    "code": 96,
+    "category": "DIWALI SPECIAL",
+    "name": "MONEY IN THE BANK (3 PCS)",
+    "unit": "Box",
+    "price": 250,
+    "mrp": 2500
+  },
+  {
+    "code": 97,
+    "category": "SPARKLERS",
+    "name": "12 CM ELECTRIC SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 30,
+    "mrp": 300
+  },
+  {
+    "code": 98,
+    "category": "SPARKLERS",
+    "name": "12 CM COLOR SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 40,
+    "mrp": 400
+  },
+  {
+    "code": 99,
+    "category": "SPARKLERS",
+    "name": "12 CM GREEN SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 35,
+    "mrp": 350
+  },
+  {
+    "code": 100,
+    "category": "SPARKLERS",
+    "name": "12 CM RED SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 35,
+    "mrp": 350
+  },
+  {
+    "code": 101,
+    "category": "SPARKLERS",
+    "name": "15 CM ELECTRIC SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 50,
+    "mrp": 500
+  },
+  {
+    "code": 102,
+    "category": "SPARKLERS",
+    "name": "15 CM CRACKING SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 50,
+    "mrp": 500
+  },
+  {
+    "code": 103,
+    "category": "SPARKLERS",
+    "name": "15 CM RED SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 50,
+    "mrp": 500
+  },
+  {
+    "code": 104,
+    "category": "SPARKLERS",
+    "name": "15 CM GREEN SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 50,
+    "mrp": 500
+  },
+  {
+    "code": 105,
+    "category": "SPARKLERS",
+    "name": "30 CM ELECTRIC SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 60,
+    "mrp": 600
+  },
+  {
+    "code": 106,
+    "category": "SPARKLERS",
+    "name": "30 CM GREEN SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 65,
+    "mrp": 650
+  },
+  {
+    "code": 107,
+    "category": "SPARKLERS",
+    "name": "30 CM RED SPARKLERS (10 PCS)",
+    "unit": "Box",
+    "price": 65,
+    "mrp": 650
+  },
+  {
+    "code": 108,
+    "category": "SPARKLERS",
+    "name": "30 CM CRACKLING SPARKLERS (5 PCS)",
+    "unit": "Box",
+    "price": 70,
+    "mrp": 700
+  },
+  {
+    "code": 109,
+    "category": "SPARKLERS",
+    "name": "30 CM MULTI MIX",
+    "unit": "Box",
+    "price": 80,
+    "mrp": 800
+  },
+  {
+    "code": 110,
+    "category": "SPARKLERS",
+    "name": "50 CM ELECTRIC",
+    "unit": "Box",
+    "price": 200,
+    "mrp": 2000
+  },
+  {
+    "code": 111,
+    "category": "SPARKLERS",
+    "name": "50 CM MULTICOLOR",
+    "unit": "Box",
+    "price": 220,
+    "mrp": 2200
+  },
+  {
+    "code": 112,
+    "category": "SPARKLERS",
+    "name": "50CM CRACKLING",
+    "unit": "Box",
+    "price": 240,
+    "mrp": 2400
+  },
+  {
+    "code": 113,
+    "category": "SPECIAL GIFT BOX",
+    "name": "22 ITEMS",
+    "unit": "Box",
+    "price": 350,
+    "mrp": 3500
+  },
+  {
+    "code": 114,
+    "category": "SPECIAL GIFT BOX",
+    "name": "26 ITEMS",
+    "unit": "Box",
+    "price": 400,
+    "mrp": 4000
+  },
+  {
+    "code": 115,
+    "category": "SPECIAL GIFT BOX",
+    "name": "31 ITEMS",
+    "unit": "Box",
+    "price": 450,
+    "mrp": 4500
+  },
+  {
+    "code": 116,
+    "category": "SPECIAL GIFT BOX",
+    "name": "36 ITEMS",
+    "unit": "Box",
+    "price": 500,
+    "mrp": 5000
+  },
+  {
+    "code": 117,
+    "category": "SPECIAL GIFT BOX",
+    "name": "41 ITEMS",
+    "unit": "Box",
+    "price": 700,
+    "mrp": 7000
+  },
+  {
+    "code": 118,
+    "category": "SPECIAL GIFT BOX",
+    "name": "51 ITEMS",
+    "unit": "Box",
+    "price": 900,
+    "mrp": 9000
+  }
+]
