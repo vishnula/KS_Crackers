@@ -8,6 +8,7 @@ import { shop } from "@/lib/shop";
 const NAV = [
   { href: "/", label: "Home" },
   { href: "/pricelist", label: "Price List" },
+  { href: "/track", label: "Track Order" },
   { href: "/safety", label: "Safety Tips" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

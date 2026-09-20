@@ -58,6 +58,7 @@ export type OrderItem = {
 export type Order = {
   id: string;
   orderNo: string; // KS-2026-0417, used as the UPI/WhatsApp reference
+  publicToken: string; // guards the confirmation page; order numbers are guessable
   customerName: string;
   mobile: string;
   whatsapp: string | null;

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getProductsByCode } from "@/lib/catalogue";
 import { priceOrder } from "@/lib/pricing";
 import { orderNo as buildOrderNo, withUniquePaise } from "@/lib/format";
-import { getOrderStore } from "@/lib/orderStore";
+import { getOrderStore, newPublicToken } from "@/lib/orderStore";
 import { notifyOwner } from "@/lib/notify";
 
 type Payload = {
@@ -119,13 +119,17 @@ export async function POST(request: Request) {
     },
     orderNo,
     seq,
+    newPublicToken(),
   );
 
   // Best-effort and deliberately awaited-with-catch: the order is already safely
   // stored, so a dead mail provider must not turn a good order into an error.
   await notifyOwner(order).catch(() => []);
 
-  return NextResponse.json({ orderNo: order.orderNo, total: order.total }, { status: 201 });
+  return NextResponse.json(
+    { orderNo: order.orderNo, total: order.total, token: order.publicToken },
+    { status: 201 },
+  );
 }
 
 type OrderUnit = import("@/lib/types").Unit;

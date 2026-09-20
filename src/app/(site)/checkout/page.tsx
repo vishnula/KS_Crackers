@@ -45,7 +45,7 @@ export default function CheckoutPage() {
         return;
       }
       clearCart();
-      router.push(`/order/${json.orderNo}`);
+      router.push(`/order/${json.orderNo}?t=${json.token}`);
     } catch {
       setErrors(["Network problem. Check your connection and try again."]);
       setSaving(false);

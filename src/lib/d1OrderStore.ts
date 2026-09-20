@@ -5,6 +5,7 @@ import type { NewOrder, OrderStore, StoredOrder } from "./orderStore";
 type OrderRow = {
   id: string;
   order_no: string;
+  public_token: string;
   customer_name: string;
   mobile: string;
   whatsapp: string | null;
@@ -44,6 +45,7 @@ function toOrder(row: OrderRow): Order {
   return {
     id: row.id,
     orderNo: row.order_no,
+    publicToken: row.public_token,
     customerName: row.customer_name,
     mobile: row.mobile,
     whatsapp: row.whatsapp,
@@ -103,7 +105,12 @@ export class D1OrderStore implements OrderStore {
     return row.last;
   }
 
-  async create(order: NewOrder, orderNo: string, seq: number): Promise<StoredOrder> {
+  async create(
+    order: NewOrder,
+    orderNo: string,
+    seq: number,
+    publicToken: string,
+  ): Promise<StoredOrder> {
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const year = Number(orderNo.split("-")[1]);
@@ -120,18 +127,19 @@ export class D1OrderStore implements OrderStore {
       this.db
         .prepare(
           `INSERT INTO orders (
-             id, order_no, seq, year, customer_name, mobile, whatsapp, email,
+             id, order_no, public_token, seq, year, customer_name, mobile, whatsapp, email,
              address, city, state, pincode, transport_pref, notes,
              subtotal, discount, total, status, payment_method, payment_status,
              utr, payment_proof_url, mobile_verified, order_ip, created_at
-           ) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18,?19,?20,?21,?22,?23,?24,?25)`,
+           ) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16,?17,?18,?19,?20,?21,?22,?23,?24,?25,?26)`,
         )
         .bind(
-          id, orderNo, seq, year, order.customerName, order.mobile, order.whatsapp,
-          order.email, order.address, order.city, order.state, order.pincode,
-          order.transportPref, order.notes, order.subtotal, order.discount, order.total,
-          order.status, order.paymentMethod, order.paymentStatus, order.utr,
-          order.paymentProofUrl, order.mobileVerified ? 1 : 0, order.orderIp, createdAt,
+          id, orderNo, publicToken, seq, year, order.customerName, order.mobile,
+          order.whatsapp, order.email, order.address, order.city, order.state,
+          order.pincode, order.transportPref, order.notes, order.subtotal,
+          order.discount, order.total, order.status, order.paymentMethod,
+          order.paymentStatus, order.utr, order.paymentProofUrl,
+          order.mobileVerified ? 1 : 0, order.orderIp, createdAt,
         ),
       ...items.map((item) =>
         this.db
@@ -146,7 +154,7 @@ export class D1OrderStore implements OrderStore {
       ),
     ]);
 
-    return { ...order, id, orderNo, createdAt, items };
+    return { ...order, id, orderNo, publicToken, createdAt, items };
   }
 
   async getByOrderNo(orderNo: string): Promise<StoredOrder | null> {

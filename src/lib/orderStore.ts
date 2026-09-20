@@ -4,9 +4,16 @@ import type { Order, OrderItem, OrderStatus, PaymentStatus } from "./types";
 // directly. Cloudflare D1 is the production backing - same account as the
 // Worker, native binding, no connection pooling (PLAN.md section 9.2).
 
-export type NewOrder = Omit<Order, "id" | "orderNo" | "createdAt"> & {
+export type NewOrder = Omit<Order, "id" | "orderNo" | "createdAt" | "publicToken"> & {
   items: Omit<OrderItem, "id" | "orderId">[];
 };
+
+/** Random, unguessable suffix for the customer's confirmation link. */
+export function newPublicToken(): string {
+  const bytes = new Uint8Array(12);
+  crypto.getRandomValues(bytes);
+  return [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
 
 export type StoredOrder = Order & { items: OrderItem[] };
 
@@ -18,10 +25,23 @@ export type StatusPatch = {
 
 export interface OrderStore {
   nextSequence(year: number): Promise<number>;
-  create(order: NewOrder, orderNo: string, seq: number): Promise<StoredOrder>;
+  create(
+    order: NewOrder,
+    orderNo: string,
+    seq: number,
+    publicToken: string,
+  ): Promise<StoredOrder>;
   getByOrderNo(orderNo: string): Promise<StoredOrder | null>;
   list(limit?: number): Promise<StoredOrder[]>;
   updateStatus(orderNo: string, patch: StatusPatch): Promise<void>;
+}
+
+/** Length-independent compare so a wrong token leaks no timing information. */
+export function tokenMatches(a: string, b: string): boolean {
+  if (!a || !b || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
 }
 
 /**
@@ -49,12 +69,18 @@ class MemoryOrderStore implements OrderStore {
     return next;
   }
 
-  async create(order: NewOrder, orderNo: string): Promise<StoredOrder> {
+  async create(
+    order: NewOrder,
+    orderNo: string,
+    _seq: number,
+    publicToken: string,
+  ): Promise<StoredOrder> {
     const id = crypto.randomUUID();
     const stored: StoredOrder = {
       ...order,
       id,
       orderNo,
+      publicToken,
       createdAt: new Date().toISOString(),
       items: order.items.map((item) => ({ ...item, id: crypto.randomUUID(), orderId: id })),
     };

@@ -24,6 +24,10 @@ CREATE INDEX IF NOT EXISTS idx_products_sort ON products (active, sort_order);
 CREATE TABLE IF NOT EXISTS orders (
   id                TEXT PRIMARY KEY,
   order_no          TEXT NOT NULL UNIQUE,
+  -- Order numbers are sequential and therefore guessable, and this page carries
+  -- the customer's name, phone and address. The confirmation link includes this
+  -- random token so a stranger cannot enumerate KS-2026-0001, 0002, 0003...
+  public_token      TEXT NOT NULL DEFAULT '',
   seq               INTEGER NOT NULL,
   year              INTEGER NOT NULL,
   customer_name     TEXT NOT NULL,

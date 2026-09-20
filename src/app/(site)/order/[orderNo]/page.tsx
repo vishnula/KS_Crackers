@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import QRCode from "qrcode";
-import { getOrderStore } from "@/lib/orderStore";
+import { getOrderStore, tokenMatches } from "@/lib/orderStore";
 import { shop } from "@/lib/shop";
 import { formatINRPlain } from "@/lib/format";
 import { buildUpiIntent, buildWhatsAppLink } from "@/lib/upi";
@@ -11,13 +11,20 @@ export const dynamic = "force-dynamic";
 
 export default async function OrderPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ orderNo: string }>;
+  searchParams: Promise<{ t?: string }>;
 }) {
   const { orderNo } = await params;
+  const { t } = await searchParams;
   const store = await getOrderStore();
   const order = await store.getByOrderNo(orderNo);
-  if (!order) notFound();
+
+  // Order numbers run in sequence, so the number alone is not proof of ownership
+  // and this page carries the customer's name, phone and address. Without the
+  // token the order is indistinguishable from one that does not exist.
+  if (!order || !tokenMatches(order.publicToken, t ?? "")) notFound();
 
   const vpa = process.env.NEXT_PUBLIC_UPI_VPA ?? "";
   const payeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME ?? shop.legalName;
