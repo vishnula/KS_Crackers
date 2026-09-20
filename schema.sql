@@ -2,6 +2,12 @@
 --   local:  npx wrangler d1 execute ks-crackers-db --local  --file=./schema.sql
 --   remote: npx wrangler d1 execute ks-crackers-db --remote --file=./schema.sql
 
+-- Browsers the owner has enabled order alerts on. One row per device.
+CREATE TABLE IF NOT EXISTS push_subscriptions (
+  endpoint   TEXT PRIMARY KEY,
+  created_at TEXT NOT NULL
+);
+
 -- Catalogue. Seeded from the client's PDF via `npm run db:seed`, then owned by
 -- the admin panel. sort_order preserves the order items appear in the printed
 -- price list; category order is derived from the lowest sort_order in each.

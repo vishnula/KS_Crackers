@@ -61,8 +61,43 @@ async function sendEmail(order: StoredOrder): Promise<NotifyResult> {
   }
 }
 
+async function sendPushAlerts(): Promise<NotifyResult> {
+  const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const privateKey = process.env.VAPID_PRIVATE_KEY;
+  const subject = process.env.VAPID_SUBJECT ?? `mailto:${process.env.OWNER_EMAIL ?? "owner@example.com"}`;
+
+  if (!publicKey || !privateKey)
+    return { channel: "push", ok: false, detail: "not configured" };
+
+  const { listSubscriptions, removeSubscription } = await import("./pushStore");
+  const endpoints = await listSubscriptions();
+  if (endpoints.length === 0)
+    return { channel: "push", ok: false, detail: "no devices subscribed" };
+
+  const { sendPush } = await import("./webpush");
+  const results = await Promise.all(
+    endpoints.map((endpoint) =>
+      sendPush(endpoint, { publicKey, privateKey, subject }).catch(() => ({
+        endpoint,
+        status: 0,
+        gone: false,
+      })),
+    ),
+  );
+
+  // A browser that dropped the subscription will never accept another push.
+  await Promise.all(results.filter((r) => r.gone).map((r) => removeSubscription(r.endpoint)));
+
+  const delivered = results.filter((r) => r.status >= 200 && r.status < 300).length;
+  return {
+    channel: "push",
+    ok: delivered > 0,
+    detail: `${delivered}/${endpoints.length} delivered`,
+  };
+}
+
 export async function notifyOwner(order: StoredOrder): Promise<NotifyResult[]> {
-  const results = [await sendEmail(order)];
+  const results = [await sendPushAlerts(), await sendEmail(order)];
 
   // Nothing configured yet: at least put it in the Worker log so the order is
   // visible in `wrangler tail` while the client sets up an email domain.
@@ -70,8 +105,6 @@ export async function notifyOwner(order: StoredOrder): Promise<NotifyResult[]> {
     console.log(`[order] ${order.orderNo} Rs ${order.total.toFixed(2)} ${order.mobile}`);
   }
 
-  // TODO: PWA push to the owner's phone - the channel he will actually read
-  // during the season. Needs a VAPID key pair and a stored subscription.
   return results;
 }
 

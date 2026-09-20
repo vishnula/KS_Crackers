@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/adminSession";
 import { getOrderStore, isDurable } from "@/lib/orderStore";
 import { formatINRPlain } from "@/lib/format";
 import type { OrderStatus } from "@/lib/types";
+import { PushToggle } from "@/components/PushToggle";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +38,10 @@ export default async function AdminOrdersPage() {
           wrangler.jsonc before taking real orders.
         </p>
       )}
+
+      <div className="mb-5">
+        <PushToggle />
+      </div>
 
       <div className="grid grid-cols-3 gap-3">
         {[

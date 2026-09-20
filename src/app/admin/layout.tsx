@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { shop } from "@/lib/shop";
+
+// Installable so the owner can keep it on his home screen and receive order
+// alerts like any other app.
+export const metadata: Metadata = {
+  title: `Admin - ${shop.brandName}`,
+  manifest: "/manifest.webmanifest",
+  robots: { index: false, follow: false },
+  appleWebApp: { capable: true, title: "KS Admin", statusBarStyle: "black-translucent" },
+};
 
 // Admin has no customer chrome: no cart bar, no WhatsApp button, no site nav.
 export default function AdminLayout({ children }: LayoutProps<"/admin">) {

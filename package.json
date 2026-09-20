@@ -9,6 +9,8 @@
     "lint": "eslint",
     "catalogue:template": "node scripts/generate-catalogue-template.mjs",
     "admin:hash": "node scripts/admin-hash.mjs",
+    "push:keys": "node scripts/push-keys.mjs",
+    "icons": "node scripts/make-icons.mjs",
     "db:seed": "node scripts/generate-seed.mjs",
     "db:seed:local": "node scripts/generate-seed.mjs && wrangler d1 execute ks-crackers-db --local --file=./seed.sql --yes",
     "db:seed:remote": "node scripts/generate-seed.mjs && wrangler d1 execute ks-crackers-db --remote --file=./seed.sql --yes",
