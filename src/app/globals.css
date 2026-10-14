@@ -47,3 +47,35 @@ body {
 .tnum {
   font-variant-numeric: tabular-nums;
 }
+
+/* Hero firework bursts: expand and fade, then rest before the next cycle. */
+.burst {
+  transform-origin: center;
+  animation: burst 5s ease-out infinite;
+  opacity: 0;
+}
+
+@keyframes burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+  12% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burst {
+    animation: none;
+    opacity: 0.75;
+  }
+}

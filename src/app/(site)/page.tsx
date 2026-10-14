@@ -4,6 +4,9 @@ import { shop } from "@/lib/shop";
 import { MIN_ORDER_VALUE, PACKING_CHARGE_PCT } from "@/lib/pricing";
 import { formatINRPlain, discountPct } from "@/lib/format";
 import { Countdown } from "@/components/Countdown";
+import { Fireworks } from "@/components/Fireworks";
+import { CrackerIcon } from "@/components/CrackerIcon";
+import { categoryStyle } from "@/lib/categoryStyle";
 
 export const dynamic = "force-static";
 
@@ -15,8 +18,9 @@ export default function Home() {
 
   return (
     <main>
-      <section className="border-b border-line bg-gradient-to-b from-surface-2 to-bg">
-        <div className="mx-auto max-w-5xl px-4 py-10 sm:py-14">
+      <section className="relative overflow-hidden border-b border-line bg-gradient-to-b from-[#1a1140] via-surface-2 to-bg">
+        <Fireworks />
+        <div className="relative mx-auto max-w-5xl px-4 py-10 sm:py-14">
           <p className="inline-block rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-[12px] font-semibold text-gold-soft">
             Diwali 2026 &middot; {topDiscount}% off on price list rates
           </p>
@@ -77,18 +81,28 @@ export default function Home() {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {categories.map((c) => (
-            <Link
-              key={c.slug}
-              href={`/pricelist#${c.slug}`}
-              className="rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-gold/50"
-            >
-              <p className="text-[14px] font-semibold leading-snug text-text">
-                {c.name}
-              </p>
-              <p className="mt-1 text-[12px] text-muted">{c.products.length} items</p>
-            </Link>
-          ))}
+          {categories.map((c) => {
+            const style = categoryStyle(c.name);
+            return (
+              <Link
+                key={c.slug}
+                href={`/pricelist#${c.slug}`}
+                className="group rounded-2xl border border-line bg-surface p-4 transition-all hover:-translate-y-0.5"
+                style={{ borderTop: `3px solid ${style.accent}` }}
+              >
+                <span
+                  className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl"
+                  style={{ backgroundColor: style.soft, color: style.accent }}
+                >
+                  <CrackerIcon icon={style.icon} className="h-6 w-6" />
+                </span>
+                <p className="text-[14px] font-semibold leading-snug text-text">
+                  {c.name}
+                </p>
+                <p className="mt-1 text-[12px] text-muted">{c.products.length} items</p>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

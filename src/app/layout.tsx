@@ -19,6 +19,14 @@ export const metadata: Metadata = {
     shop.brandName,
     shop.legalName,
   ],
+  // Off by default so the workers.dev demo is never indexed: it carries the
+  // client's real phone numbers and prices, and an indexed throwaway domain
+  // competes with the real one later. Set NEXT_PUBLIC_ALLOW_INDEXING=true
+  // only once the live domain is in front of it.
+  robots:
+    process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true"
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
 };
 
 // Only html/body live here. Customer chrome is in (site)/layout.tsx and the

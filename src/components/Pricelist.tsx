@@ -2,7 +2,9 @@
 
 import { useMemo, useState } from "react";
 import type { CatalogueProduct } from "@/lib/catalogue";
+import { categoryStyle, type CategoryStyle } from "@/lib/categoryStyle";
 import { formatINRPlain, discountPct } from "@/lib/format";
+import { CrackerIcon } from "./CrackerIcon";
 import { useCart } from "./CartProvider";
 
 type ListedProduct = CatalogueProduct & { inStock?: boolean; imageUrl?: string | null };
@@ -55,6 +57,7 @@ function Row({
   price,
   inStock = true,
   imageUrl,
+  style,
   onZoom,
 }: {
   code: number;
@@ -64,32 +67,43 @@ function Row({
   price: number;
   inStock?: boolean;
   imageUrl?: string | null;
+  style: CategoryStyle;
   onZoom: (image: { url: string; name: string }) => void;
 }) {
   const { qtys } = useCart();
   const qty = qtys[code] ?? 0;
 
+  // No photo yet for most items, so the category illustration stands in. Keeps
+  // the row visually anchored instead of leaving a hole where an image goes.
   const thumb = imageUrl ? (
     <button
       type="button"
       onClick={() => onZoom({ url: imageUrl, name })}
       aria-label={`View ${name}`}
-      className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-line bg-surface-2"
+      className="h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-line bg-surface-2"
     >
       {/* Served straight from public R2, already resized on upload. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={imageUrl} alt={name} loading="lazy" className="h-full w-full object-cover" />
     </button>
-  ) : null;
+  ) : (
+    <span
+      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl"
+      style={{ backgroundColor: style.soft, color: style.accent }}
+      aria-hidden="true"
+    >
+      <CrackerIcon icon={style.icon} className="h-7 w-7" />
+    </span>
+  );
 
   // Sold-out items stay listed - customers look for them by number - but cannot
   // be added, so the owner never has to phone back and remove a line.
   if (!inStock) {
     return (
-      <li className="flex items-center gap-3 border-b border-line/60 px-3 py-3 opacity-50 sm:px-4">
+      <li className="flex items-center gap-3 border-b border-line/60 px-3 py-3 opacity-45 grayscale sm:px-4">
         {thumb}
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[15px] font-medium text-text">{name}</p>
+          <p className="text-[15px] font-medium leading-snug text-text">{name}</p>
           <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-[13px] text-muted">
             <span className="tnum">#{code}</span>
             <span>1 {unit}</span>
@@ -111,7 +125,7 @@ function Row({
     >
       {thumb}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[15px] font-medium text-text">{name}</p>
+        <p className="text-[15px] font-medium leading-snug text-text">{name}</p>
         <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-[13px] text-muted">
           <span className="tnum">#{code}</span>
           <span>1 {unit}</span>
@@ -209,13 +223,21 @@ export function Pricelist({ categories }: { categories: ListedCategory[] }) {
 
       {shown.map((cat) => (
         <section key={cat.slug} id={cat.slug}>
-          <h2 className="cat-head border-y border-line bg-surface-2/95 px-3 py-2.5 text-[13px] font-bold uppercase tracking-wider text-gold backdrop-blur sm:px-4">
+          <h2
+            className="cat-head flex items-center gap-2 border-y border-line px-3 py-2.5 text-[13px] font-bold uppercase tracking-wider backdrop-blur sm:px-4"
+            style={{
+              backgroundColor: categoryStyle(cat.name).soft,
+              color: categoryStyle(cat.name).accent,
+              borderLeft: `3px solid ${categoryStyle(cat.name).accent}`,
+            }}
+          >
+            <CrackerIcon icon={categoryStyle(cat.name).icon} className="h-4 w-4" />
             {cat.name}
-            <span className="ml-2 font-normal text-muted">({cat.products.length})</span>
+            <span className="font-normal opacity-70">({cat.products.length})</span>
           </h2>
           <ul>
             {cat.products.map((p) => (
-              <Row key={p.code} {...p} onZoom={setZoomed} />
+              <Row key={p.code} {...p} style={categoryStyle(cat.name)} onZoom={setZoomed} />
             ))}
           </ul>
         </section>
