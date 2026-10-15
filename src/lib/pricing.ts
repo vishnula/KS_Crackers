@@ -5,7 +5,7 @@ import { withUniquePaise } from "./format";
 
 // "3 % PACKING CHARGES APPLICABLE" — printed on the client's 2026 pricelist.
 export const PACKING_CHARGE_PCT = Number(process.env.NEXT_PUBLIC_PACKING_CHARGE_PCT ?? 3);
-export const MIN_ORDER_VALUE = Number(process.env.NEXT_PUBLIC_MIN_ORDER_VALUE ?? 2500);
+export const MIN_ORDER_VALUE = Number(process.env.NEXT_PUBLIC_MIN_ORDER_VALUE ?? 3000);
 
 // Only the numbers matter for pricing. Callers may pass richer lines (the order
 // API passes name and unit); the generic below carries those fields through.
