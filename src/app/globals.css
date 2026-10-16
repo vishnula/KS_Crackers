@@ -79,3 +79,46 @@ body {
     opacity: 0.75;
   }
 }
+
+/* The bill is meant to leave the screen - printed, saved as PDF, or shared.
+   Strip the app chrome and force black on white so it is readable on paper. */
+@media print {
+  .no-print,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    padding-bottom: 0 !important;
+  }
+
+  .bill {
+    max-width: none;
+    padding: 0;
+  }
+
+  .bill-sheet {
+    border-radius: 0;
+    padding: 0;
+  }
+
+  /* The on-screen scroll wrapper would otherwise clip columns on paper. */
+  .bill-sheet .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  .bill-sheet table {
+    min-width: 0 !important;
+  }
+
+  /* Never split an item across two pages. */
+  .bill-sheet tr {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 12mm;
+  }
+}

@@ -27,9 +27,17 @@ export default async function AdminOrderPage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-6">
-      <Link href="/admin" className="text-[13px] text-muted hover:text-text">
-        &larr; All orders
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <Link href="/admin" className="text-[13px] text-muted hover:text-text">
+          &larr; All orders
+        </Link>
+        <Link
+          href={`/admin/orders/${orderNo}/bill`}
+          className="rounded-xl bg-gold px-4 py-2.5 text-[14px] font-bold text-[#1a1200]"
+        >
+          Bill
+        </Link>
+      </div>
 
       <div className="mt-3 flex flex-wrap items-baseline justify-between gap-2">
         <h1 className="tnum text-2xl font-black text-text">{order.orderNo}</h1>
