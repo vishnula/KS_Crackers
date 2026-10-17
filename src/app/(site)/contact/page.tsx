@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import QRCode from "qrcode";
 import { shop, pageTitle } from "@/lib/shop";
 import { buildWhatsAppLink } from "@/lib/upi";
 import { MIN_ORDER_VALUE, PACKING_CHARGE_PCT } from "@/lib/pricing";
@@ -11,7 +12,18 @@ export const metadata: Metadata = {
   description: `Contact ${shop.brandName} (${shop.legalName}), ${shop.city}. Phone and WhatsApp for orders and enquiries.`,
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  // No amount on this one: it is for customers who ordered over the phone. The
+  // per-order QR on the confirmation page carries the exact figure instead.
+  const vpa = process.env.NEXT_PUBLIC_UPI_VPA ?? "";
+  const payeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME ?? shop.legalName;
+  const upiLink = vpa
+    ? `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&cu=INR`
+    : null;
+  const qrSvg = upiLink
+    ? await QRCode.toString(upiLink, { type: "svg", margin: 0, width: 160 })
+    : null;
+
   const wa = buildWhatsAppLink(
     `91${shop.phones[0]}`,
     `Hello ${shop.brandName}, I have an enquiry about the 2026 price list.`,
@@ -53,7 +65,44 @@ export default function ContactPage() {
         </a>
       </div>
 
-      <section className="mt-8 rounded-2xl border border-line bg-surface p-5">
+      {vpa && (
+        <section className="mt-8 rounded-2xl border border-gold/30 bg-gold/5 p-5">
+          <h2 className="text-[15px] font-bold text-text">Pay by UPI</h2>
+          <p className="mt-1 text-[13.5px] leading-relaxed text-muted">
+            Already spoken to us? Scan and pay here. Please put your{" "}
+            <strong className="text-text">order number</strong> in the payment note so we
+            can match it.
+          </p>
+
+          <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            {qrSvg && (
+              <div
+                className="shrink-0 rounded-xl bg-white p-2.5"
+                // Generated server-side by the qrcode package from our own data.
+                dangerouslySetInnerHTML={{ __html: qrSvg }}
+              />
+            )}
+            <div>
+              <p className="text-[12px] uppercase tracking-wider text-muted">UPI ID</p>
+              <p className="tnum text-[17px] font-bold text-gold">{vpa}</p>
+              <p className="mt-1 text-[13.5px] text-text">{payeeName}</p>
+              <a
+                href={upiLink ?? "#"}
+                className="mt-3 inline-block rounded-xl bg-gold px-5 py-3 text-[14px] font-bold text-[#1a1200]"
+              >
+                Open UPI app
+              </a>
+            </div>
+          </div>
+
+          <p className="mt-4 text-[12px] leading-relaxed text-muted">
+            If you ordered on this site, use the QR on your own order page instead
+            &mdash; it already has the exact amount filled in.
+          </p>
+        </section>
+      )}
+
+      <section className="mt-5 rounded-2xl border border-line bg-surface p-5">
         <h2 className="text-[15px] font-bold text-text">Shop address</h2>
         <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-muted">
           {shop.address || `${shop.legalName}\n${shop.city}, ${shop.state}`}
