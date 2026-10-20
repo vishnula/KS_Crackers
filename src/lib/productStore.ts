@@ -72,16 +72,25 @@ function seedFallback(): AdminProduct[] {
 
 export async function listProducts(): Promise<AdminProduct[]> {
   const db = await getDb();
-  if (!db) return seedFallback();
+  // The fallback is for `next build`, which has no binding. Reaching it at
+  // runtime means the site is showing seed prices and pretending everything is
+  // in stock, so make it loud - this hid a stale price list for days.
+  if (!db) {
+    console.warn("[catalogue] no D1 binding, serving the JSON seed");
+    return seedFallback();
+  }
 
   try {
     const rows = await db
       .prepare(`SELECT * FROM products ORDER BY sort_order ASC`)
       .all<ProductRow>();
-    if (rows.results.length === 0) return seedFallback();
+    if (rows.results.length === 0) {
+      console.warn("[catalogue] products table is empty, serving the JSON seed");
+      return seedFallback();
+    }
     return rows.results.map(toProduct);
-  } catch {
-    // Table not created yet - fall back rather than blanking the price list.
+  } catch (error) {
+    console.warn("[catalogue] D1 read failed, serving the JSON seed:", error);
     return seedFallback();
   }
 }

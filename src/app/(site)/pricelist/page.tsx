@@ -6,10 +6,16 @@ import { listLiveProducts, groupByCategory } from "@/lib/productStore";
 import { slugify } from "@/lib/catalogue";
 import { Pricelist } from "@/components/Pricelist";
 
-// ISR, not fully static: the owner edits prices and stock in /admin. Pages are
-// served from the R2 cache between revalidations, so visitors do not each cost a
-// Worker invocation. Admin saves revalidate this path immediately.
-export const revalidate = 600;
+// Rendered per request, not ISR.
+//
+// ISR looked cheaper, but it silently served the build-time render for days: the
+// build has no D1 binding, so it fell back to the JSON seed, and every stock and
+// price change the owner made in /admin was invisible on the site. A price list
+// that lies about what is in stock is worse than one that costs a Worker call.
+//
+// Cost is fine: one invocation per view against 100k/day free. Revisit only if
+// traffic ever approaches that.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: pageTitle("Price List 2026"),

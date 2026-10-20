@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProductsByCode } from "@/lib/catalogue";
+import { listProducts } from "@/lib/productStore";
 import { priceOrder } from "@/lib/pricing";
 import { orderNo as buildOrderNo, withUniquePaise } from "@/lib/format";
 import { getOrderStore, newPublicToken } from "@/lib/orderStore";
@@ -45,14 +45,22 @@ export async function POST(request: Request) {
   const errors = validate(body);
   if (errors.length) return NextResponse.json({ errors }, { status: 400 });
 
-  // Re-price from the catalogue, never from what the browser posted. Otherwise
-  // anyone can edit the DOM and order Rs 50,000 of crackers for Rs 1.
-  const catalogue = getProductsByCode();
+  // Re-price from the live catalogue in D1, never from what the browser posted
+  // and never from the JSON seed. Pricing from the seed meant a price the owner
+  // edited in /admin was shown correctly on the site but billed at the old
+  // figure, and sold-out items were still accepted.
+  const catalogue = new Map((await listProducts()).map((p) => [p.code, p]));
+
   const lines = [];
+  const unavailable: string[] = [];
   for (const line of body.lines ?? []) {
     const product = catalogue.get(Number(line.code));
     const qty = Math.floor(Number(line.qty));
     if (!product || !Number.isFinite(qty) || qty <= 0 || qty > 999) continue;
+    if (!product.active || !product.inStock) {
+      unavailable.push(product.name);
+      continue;
+    }
     lines.push({
       code: String(product.code),
       name: product.name,
@@ -62,6 +70,17 @@ export async function POST(request: Request) {
       qty,
     });
   }
+
+  // Tell them which item to drop rather than failing the whole order silently.
+  if (unavailable.length)
+    return NextResponse.json(
+      {
+        errors: [
+          `Sold out, please remove from your cart: ${unavailable.join(", ")}`,
+        ],
+      },
+      { status: 409 },
+    );
 
   if (lines.length === 0)
     return NextResponse.json({ errors: ["No valid items in your cart"] }, { status: 400 });

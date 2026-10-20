@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getCatalogue, getProducts } from "@/lib/catalogue";
+import { slugify } from "@/lib/catalogue";
+import { listLiveProducts, groupByCategory } from "@/lib/productStore";
 import { shop } from "@/lib/shop";
 import { MIN_ORDER_VALUE, PACKING_CHARGE_PCT } from "@/lib/pricing";
 import { formatINRPlain, discountPct } from "@/lib/format";
@@ -8,12 +9,20 @@ import { Fireworks } from "@/components/Fireworks";
 import { CrackerIcon } from "@/components/CrackerIcon";
 import { categoryStyle } from "@/lib/categoryStyle";
 
-export const dynamic = "force-static";
+// Reads the live catalogue, same as the price list: the gift box section must
+// not advertise items the owner has marked sold out.
+export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const categories = getCatalogue();
-  const products = getProducts();
-  const giftBoxes = categories.find((c) => c.name.includes("GIFT BOX"));
+export default async function Home() {
+  const products = await listLiveProducts();
+  const categories = groupByCategory(products).map((c) => ({
+    name: c.name,
+    slug: slugify(c.name),
+    products: c.products,
+  }));
+  const giftBoxCategory = categories.find((c) => c.name.includes("GIFT BOX"));
+  // Only highlight what can actually be bought.
+  const giftBoxes = giftBoxCategory?.products.filter((p) => p.inStock) ?? [];
   const topDiscount = Math.max(...products.map((p) => discountPct(p.mrp, p.price)));
 
   return (
@@ -106,14 +115,14 @@ export default function Home() {
         </div>
       </section>
 
-      {giftBoxes && (
+      {giftBoxes.length > 0 && (
         <section className="mx-auto max-w-5xl px-4 pb-10">
           <h2 className="mb-1 text-xl font-bold text-text">Gift boxes</h2>
           <p className="mb-4 text-[13px] text-muted">
             Ready-made assortments &mdash; the easiest way to order.
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {giftBoxes.products.map((p) => (
+            {giftBoxes.map((p) => (
               <Link
                 key={p.code}
                 href="/pricelist#special-gift-box"
