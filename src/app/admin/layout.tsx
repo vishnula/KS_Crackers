@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: LayoutProps<"/admin">) {
   return (
     <div className="flex min-h-full flex-col">
-      <header className="border-b border-line bg-surface">
+      <header className="no-print border-b border-line bg-surface">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
           <Link href="/admin">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted">

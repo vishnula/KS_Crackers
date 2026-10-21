@@ -83,9 +83,10 @@ body {
 /* The bill is meant to leave the screen - printed, saved as PDF, or shared.
    Strip the app chrome and force black on white so it is readable on paper. */
 @media print {
-  .no-print,
-  header,
-  footer {
+  /* Only ever hide what is explicitly marked. Hiding `header` wholesale also
+     hid the bill's own shop block - name, address and phone numbers - so the
+     printed copy and the PDF went out with no way to contact the shop. */
+  .no-print {
     display: none !important;
   }
 

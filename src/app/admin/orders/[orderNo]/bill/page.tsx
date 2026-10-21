@@ -71,10 +71,10 @@ export default async function BillPage({
               {shop.legalName}
             </p>
             <h1 className="text-2xl font-black">{shop.brandName}</h1>
-            <p className="mt-1 text-[12.5px] leading-relaxed text-[#444]">
+            <p className="mt-1 whitespace-pre-line text-[12.5px] leading-relaxed text-[#444]">
               {shop.address || `${shop.city}, ${shop.state}`}
               <br />
-              {shop.phones.join(" · ")}
+              Phone: {shop.phones.join(", ")}
               {shop.gstin && (
                 <>
                   <br />
